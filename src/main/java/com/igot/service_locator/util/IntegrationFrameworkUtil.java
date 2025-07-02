@@ -49,7 +49,8 @@ public class IntegrationFrameworkUtil {
 
         if (integrationModel.getPartnerCode() != null) {
             JsonNode response = dataTransformUtility.callContentPartnerReadAPIByPartnerCode(integrationModel.getPartnerCode());
-            if (!response.path("transformContentViaApi").isMissingNode()) {
+            JsonNode transformContent = response.path("transformContentViaApi");
+            if (transformContent!=null && !transformContent.isEmpty()&&!transformContent.isMissingNode()) {
                 log.info("Inside transformContentViaApi: {}", integrationModel.getPartnerCode());
                 List<Object> contentJson = mapper.convertValue(response.get("transformContentViaApi"), new TypeReference<List<Object>>() {});
                 Object transformData = dataTransformUtility.transformData(jsonNode, contentJson);
@@ -64,7 +65,8 @@ public class IntegrationFrameworkUtil {
         } else if(serviceLocator.getPartnerCode() != null) {
             log.info("serviceLocator.getPartnerCode(): {}", serviceLocator.getPartnerCode());
             JsonNode response = dataTransformUtility.callContentPartnerReadAPIByPartnerCode(serviceLocator.getPartnerCode());
-            if (!response.path("transformProgressViaApi").isMissingNode()) {
+            JsonNode transformProgress = response.path("transformProgressViaApi");
+            if (transformProgress!=null && !transformProgress.isEmpty()&&!transformProgress.isMissingNode()) {
                 log.info("Inside transformProgressViaApi: {}", serviceLocator.getPartnerCode());
                 List<Object> contentJson = mapper.convertValue(response.get("transformProgressViaApi"), new TypeReference<List<Object>>() {});
                 Object transformData = dataTransformUtility.transformData(jsonNode, contentJson);
